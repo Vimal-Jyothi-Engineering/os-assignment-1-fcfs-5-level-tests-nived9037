@@ -19,46 +19,43 @@ int main() {
     for(int i=0;i<n;i++)
         scanf("%s %d %d", p[i].pid, &p[i].arrival, &p[i].burst);
 
-    for(int i=0;i<n-1;i++){
-        for(int j=0;j<n-i-1;j++){
+    for(int i=0;i<n-1;i++)
+        for(int j=0;j<n-i-1;j++)
             if(p[j].arrival > p[j+1].arrival){
-                Process temp = p[j];
-                p[j] = p[j+1];
-                p[j+1] = temp;
+                Process t=p[j];
+                p[j]=p[j+1];
+                p[j+1]=t;
             }
-        }
-    }
 
-    int current_time = 0;
-    float total_wt = 0, total_tat = 0;
+    int current_time=0;
+    float total_wt=0,total_tat=0;
 
     for(int i=0;i<n;i++){
+        if(current_time<p[i].arrival)
+            current_time=p[i].arrival;
 
-        if(current_time < p[i].arrival)
-            current_time = p[i].arrival;
+        p[i].waiting=current_time-p[i].arrival;
+        p[i].turnaround=p[i].waiting+p[i].burst;
 
-        p[i].waiting = current_time - p[i].arrival;
-        p[i].turnaround = p[i].waiting + p[i].burst;
+        current_time+=p[i].burst;
 
-        current_time += p[i].burst;
-
-        total_wt += p[i].waiting;
-        total_tat += p[i].turnaround;
+        total_wt+=p[i].waiting;
+        total_tat+=p[i].turnaround;
     }
 
-    float avg_wt = total_wt/n;
-    float avg_tat = total_tat/n;
+    float avg_wt=total_wt/n;
+    float avg_tat=total_tat/n;
 
     printf("Waiting Time:\n");
     for(int i=0;i<n;i++)
-        printf("%s %d\n", p[i].pid, p[i].waiting);
+        printf("%s %d\n",p[i].pid,p[i].waiting);
 
     printf("Turnaround Time:\n");
     for(int i=0;i<n;i++)
-        printf("%s %d\n", p[i].pid, p[i].turnaround);
+        printf("%s %d\n",p[i].pid,p[i].turnaround);
 
-    printf("Average Waiting Time: %.2f\n", avg_wt);
-    printf("Average Turnaround Time: %.2f", avg_tat);
+    printf("Average Waiting Time: %.2f\n",avg_wt);
+    printf("Average Turnaround Time: %.2f",avg_tat);
 
     return 0;
 }
