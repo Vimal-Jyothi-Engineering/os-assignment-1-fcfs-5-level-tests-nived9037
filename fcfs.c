@@ -2,7 +2,7 @@
 
 typedef struct{
     char pid[10];
-    int at, bt, wt, tat, ct;
+    int at, bt, wt, tat;
 } Process;
 
 int main(){
@@ -15,7 +15,7 @@ int main(){
     for(int i=0;i<n;i++)
         scanf("%s%d%d",p[i].pid,&p[i].at,&p[i].bt);
 
-    // SORT ONLY BY ARRIVAL TIME (stable)
+    // stable sort by arrival time
     for(int i=0;i<n-1;i++){
         for(int j=0;j<n-i-1;j++){
             if(p[j].at > p[j+1].at){
@@ -26,19 +26,20 @@ int main(){
         }
     }
 
-    int time=0;
+    int current_time=0;
     float total_wt=0,total_tat=0;
 
     for(int i=0;i<n;i++){
 
-        if(time < p[i].at)
-            time = p[i].at;
+        int start=current_time;
 
-        p[i].ct = time + p[i].bt;
-        p[i].tat = p[i].ct - p[i].at;
-        p[i].wt  = p[i].tat - p[i].bt;
+        if(start < p[i].at)
+            start = p[i].at;
 
-        time = p[i].ct;
+        p[i].wt = start;
+        p[i].tat = start + p[i].bt;
+
+        current_time = p[i].tat;
 
         total_wt += p[i].wt;
         total_tat += p[i].tat;
