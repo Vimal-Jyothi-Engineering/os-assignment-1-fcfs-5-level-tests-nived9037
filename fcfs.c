@@ -33,7 +33,6 @@ int main() {
     float total_wt = 0, total_tat = 0;
 
     for (int i = 0; i < n; i++) {
-
         if (current_time < p[i].arrival)
             current_time = p[i].arrival;
 
@@ -49,18 +48,16 @@ int main() {
     float avg_wt = total_wt / n;
     float avg_tat = total_tat / n;
 
-    printf("Waiting Time: ");
-    for (int i = 0; i < n; i++) {
-        printf("%s %d ", p[i].pid, p[i].waiting);
-    }
+    printf("Waiting Time:\n");
+    for (int i = 0; i < n; i++)
+        printf("%s %d\n", p[i].pid, p[i].waiting);
 
-    printf("\nTurnaround Time: ");
-    for (int i = 0; i < n; i++) {
-        printf("%s %d ", p[i].pid, p[i].turnaround);
-    }
+    printf("Turnaround Time:\n");
+    for (int i = 0; i < n; i++)
+        printf("%s %d\n", p[i].pid, p[i].turnaround);
 
-    printf("\nAverage Waiting Time: %.2f", avg_wt);
-    printf("\nAverage Turnaround Time: %.2f", avg_tat);
+    printf("Average Waiting Time: %.2f\n", avg_wt);
+    printf("Average Turnaround Time: %.2f", avg_tat);
 
     return 0;
 }
