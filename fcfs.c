@@ -3,7 +3,7 @@
 
 typedef struct{
     char pid[10];
-    int at, bt, wt, tat;
+    int at, bt, wt, tat, ct;
 } Process;
 
 int main(){
@@ -26,20 +26,19 @@ int main(){
                 p[j+1]=t;
             }
 
-    int current_time = 0;
-    float total_wt = 0, total_tat = 0;
+    int time=0;
+    float total_wt=0,total_tat=0;
 
     for(int i=0;i<n;i++){
 
-        int start_time = current_time;
+        if(time < p[i].at)
+            time = p[i].at;
 
-        if(start_time < p[i].at)
-            start_time = p[i].at;
+        p[i].ct = time + p[i].bt;
+        p[i].tat = p[i].ct - p[i].at;
+        p[i].wt  = p[i].tat - p[i].bt;
 
-        p[i].wt = start_time;
-        p[i].tat = start_time + p[i].bt;
-
-        current_time = p[i].tat;
+        time = p[i].ct;
 
         total_wt += p[i].wt;
         total_tat += p[i].tat;
