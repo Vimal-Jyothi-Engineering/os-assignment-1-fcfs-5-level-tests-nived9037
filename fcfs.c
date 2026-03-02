@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 typedef struct {
     char pid[10];
@@ -11,33 +12,30 @@ typedef struct {
 int main() {
 
     int n;
-    scanf("%d", &n);
+    scanf("%d",&n);
 
     Process p[n];
 
-    for(int i = 0; i < n; i++)
-        scanf("%s %d %d", p[i].pid, &p[i].at, &p[i].bt);
+    for(int i=0;i<n;i++)
+        scanf("%s %d %d",p[i].pid,&p[i].at,&p[i].bt);
 
-    // Sort by arrival time
-    for(int i = 0; i < n - 1; i++) {
-        for(int j = 0; j < n - i - 1; j++) {
-            if(p[j].at > p[j+1].at) {
-                Process temp = p[j];
-                p[j] = p[j+1];
-                p[j+1] = temp;
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++){
+            if(p[j].at > p[j+1].at){
+                Process temp=p[j];
+                p[j]=p[j+1];
+                p[j+1]=temp;
             }
         }
     }
 
-    float total_wt = 0, total_tat = 0;
-
     p[0].wt = 0;
     p[0].tat = p[0].bt;
 
-    total_wt += p[0].wt;
-    total_tat += p[0].tat;
+    float total_wt = p[0].wt;
+    float total_tat = p[0].tat;
 
-    for(int i = 1; i < n; i++) {
+    for(int i=1;i<n;i++){
         p[i].wt = p[i-1].wt + p[i-1].bt;
         p[i].tat = p[i].wt + p[i].bt;
 
@@ -45,19 +43,19 @@ int main() {
         total_tat += p[i].tat;
     }
 
-    float avg_wt = total_wt / n;
-    float avg_tat = total_tat / n;
+    float avg_wt = total_wt/n;
+    float avg_tat = total_tat/n;
 
     printf("Waiting Time:\n");
-    for(int i = 0; i < n; i++)
-        printf("%s %d\n", p[i].pid, p[i].wt);
+    for(int i=0;i<n;i++)
+        printf("%s %d\n",p[i].pid,p[i].wt);
 
     printf("Turnaround Time:\n");
-    for(int i = 0; i < n; i++)
-        printf("%s %d\n", p[i].pid, p[i].tat);
+    for(int i=0;i<n;i++)
+        printf("%s %d\n",p[i].pid,p[i].tat);
 
-    printf("Average Waiting Time: %.2f\n", avg_wt);
-    printf("Average Turnaround Time: %.2f", avg_tat);
+    printf("Average Waiting Time: %.2f\n",avg_wt);
+    printf("Average Turnaround Time: %.2f",avg_tat);
 
     return 0;
 }
