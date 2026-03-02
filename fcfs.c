@@ -7,6 +7,7 @@ typedef struct{
 } Process;
 
 int main(){
+
     int n;
     scanf("%d",&n);
 
@@ -15,27 +16,28 @@ int main(){
     for(int i=0;i<n;i++)
         scanf("%s%d%d",p[i].pid,&p[i].at,&p[i].bt);
 
-    // Sort by arrival time, then process ID if arrival time is equal
+    // sort by arrival time, then PID
     for(int i=0;i<n-1;i++)
         for(int j=0;j<n-i-1;j++)
-            if(p[j].at > p[j+1].at || 
-                (p[j].at == p[j+1].at && strcmp(p[j].pid, p[j+1].pid) > 0)){
-                Process t = p[j];
-                p[j] = p[j+1];
-                p[j+1] = t;
+            if(p[j].at > p[j+1].at ||
+              (p[j].at==p[j+1].at &&
+               strcmp(p[j].pid,p[j+1].pid)>0)){
+                Process t=p[j];
+                p[j]=p[j+1];
+                p[j+1]=t;
             }
 
-    int time=0;
     float aw=0,at=0;
 
-    for(int i=0;i<n;i++){
-        if(time<p[i].at)
-            time=p[i].at;
+    p[0].wt=0;
+    p[0].tat=p[0].bt;
 
-        p[i].wt=time-p[i].at;
+    aw+=p[0].wt;
+    at+=p[0].tat;
+
+    for(int i=1;i<n;i++){
+        p[i].wt=p[i-1].wt+p[i-1].bt;
         p[i].tat=p[i].wt+p[i].bt;
-
-        time+=p[i].bt;
 
         aw+=p[i].wt;
         at+=p[i].tat;
