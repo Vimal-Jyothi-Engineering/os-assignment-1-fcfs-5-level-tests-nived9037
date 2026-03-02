@@ -1,61 +1,57 @@
 #include <stdio.h>
-#include <string.h>
 
-typedef struct {
+typedef struct{
     char pid[10];
-    int arrival;
-    int burst;
-    int waiting;
-    int turnaround;
-} Process;
+    int at, bt, wt, tat;
+}P;
 
-int main() {
+int main(){
 
     int n;
-    scanf("%d", &n);
+    scanf("%d",&n);
 
-    Process p[n];
+    P p[n];
 
     for(int i=0;i<n;i++)
-        scanf("%s %d %d", p[i].pid, &p[i].arrival, &p[i].burst);
+        scanf("%s%d%d",p[i].pid,&p[i].at,&p[i].bt);
 
     for(int i=0;i<n-1;i++)
         for(int j=0;j<n-i-1;j++)
-            if(p[j].arrival > p[j+1].arrival){
-                Process t=p[j];
+            if(p[j].at>p[j+1].at){
+                P t=p[j];
                 p[j]=p[j+1];
                 p[j+1]=t;
             }
 
-    int current_time=0;
-    float total_wt=0,total_tat=0;
+    int time=0;
+    float aw=0,at=0;
 
     for(int i=0;i<n;i++){
-        if(current_time<p[i].arrival)
-            current_time=p[i].arrival;
+        if(time<p[i].at)
+            time=p[i].at;
 
-        p[i].waiting=current_time-p[i].arrival;
-        p[i].turnaround=p[i].waiting+p[i].burst;
+        p[i].wt=time-p[i].at;
+        p[i].tat=p[i].wt+p[i].bt;
 
-        current_time+=p[i].burst;
+        time+=p[i].bt;
 
-        total_wt+=p[i].waiting;
-        total_tat+=p[i].turnaround;
+        aw+=p[i].wt;
+        at+=p[i].tat;
     }
 
-    float avg_wt=total_wt/n;
-    float avg_tat=total_tat/n;
+    aw/=n;
+    at/=n;
 
     printf("Waiting Time:\n");
     for(int i=0;i<n;i++)
-        printf("%s %d\n",p[i].pid,p[i].waiting);
+        printf("%s %d\n",p[i].pid,p[i].wt);
 
     printf("Turnaround Time:\n");
     for(int i=0;i<n;i++)
-        printf("%s %d\n",p[i].pid,p[i].turnaround);
+        printf("%s %d\n",p[i].pid,p[i].tat);
 
-    printf("Average Waiting Time: %.2f\n",avg_wt);
-    printf("Average Turnaround Time: %.2f",avg_tat);
+    printf("Average Waiting Time: %.2f\n",aw);
+    printf("Average Turnaround Time: %.2f",at);
 
     return 0;
 }
