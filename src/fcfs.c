@@ -19,9 +19,48 @@ int main() {
         scanf("%s %d %d", p[i].pid, &p[i].arrival, &p[i].burst);
     }
 
-    // TODO: Sort by arrival time
-    // TODO: Compute waiting & turnaround time
-    // TODO: Print EXACTLY in required format
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (p[j].arrival > p[j + 1].arrival) {
+                Process temp = p[j];
+                p[j] = p[j + 1];
+                p[j + 1] = temp;
+            }
+        }
+    }
+
+    int current_time = 0;
+    float total_wt = 0, total_tat = 0;
+
+    for (int i = 0; i < n; i++) {
+
+        if (current_time < p[i].arrival)
+            current_time = p[i].arrival;
+
+        p[i].waiting = current_time - p[i].arrival;
+        p[i].turnaround = p[i].waiting + p[i].burst;
+
+        current_time += p[i].burst;
+
+        total_wt += p[i].waiting;
+        total_tat += p[i].turnaround;
+    }
+
+    float avg_wt = total_wt / n;
+    float avg_tat = total_tat / n;
+
+    printf("Waiting Time: ");
+    for (int i = 0; i < n; i++) {
+        printf("%s %d ", p[i].pid, p[i].waiting);
+    }
+
+    printf("\nTurnaround Time: ");
+    for (int i = 0; i < n; i++) {
+        printf("%s %d ", p[i].pid, p[i].turnaround);
+    }
+
+    printf("\nAverage Waiting Time: %.2f", avg_wt);
+    printf("\nAverage Turnaround Time: %.2f", avg_tat);
 
     return 0;
 }
