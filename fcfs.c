@@ -26,24 +26,27 @@ int main(){
                 p[j+1]=t;
             }
 
-    float aw=0, at=0;
+    int current_time = 0;
+    float total_wt = 0, total_tat = 0;
 
-    p[0].wt=0;
-    p[0].tat=p[0].bt;
+    for(int i=0;i<n;i++){
 
-    aw+=p[0].wt;
-    at+=p[0].tat;
+        int start_time = current_time;
 
-    for(int i=1;i<n;i++){
-        p[i].wt=p[i-1].wt+p[i-1].bt;
-        p[i].tat=p[i].wt+p[i].bt;
+        if(start_time < p[i].at)
+            start_time = p[i].at;
 
-        aw+=p[i].wt;
-        at+=p[i].tat;
+        p[i].wt = start_time;
+        p[i].tat = start_time + p[i].bt;
+
+        current_time = p[i].tat;
+
+        total_wt += p[i].wt;
+        total_tat += p[i].tat;
     }
 
-    aw/=n;
-    at/=n;
+    float avg_wt = total_wt/n;
+    float avg_tat = total_tat/n;
 
     printf("Waiting Time:\n");
     for(int i=0;i<n;i++)
@@ -53,8 +56,8 @@ int main(){
     for(int i=0;i<n;i++)
         printf("%s %d\n",p[i].pid,p[i].tat);
 
-    printf("Average Waiting Time: %.2f\n",aw);
-    printf("Average Turnaround Time: %.2f",at);
+    printf("Average Waiting Time: %.2f\n",avg_wt);
+    printf("Average Turnaround Time: %.2f",avg_tat);
 
     return 0;
 }
