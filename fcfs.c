@@ -29,16 +29,15 @@ int main() {
         }
     }
 
-    p[0].wt = 0;
-    p[0].tat = p[0].bt;
+    float total_wt = 0, total_tat = 0;
+    int current_time = 0;
 
-    float total_wt = p[0].wt;
-    float total_tat = p[0].tat;
-
-    for(int i=1;i<n;i++){
-        p[i].wt = p[i-1].wt + p[i-1].bt;
+    for(int i=0; i<n; i++){
+        if(current_time < p[i].at)
+            current_time = p[i].at;
+        p[i].wt = current_time - p[i].at;
         p[i].tat = p[i].wt + p[i].bt;
-
+        current_time += p[i].bt;
         total_wt += p[i].wt;
         total_tat += p[i].tat;
     }
