@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 typedef struct{
     char pid[10];
@@ -16,15 +15,16 @@ int main(){
     for(int i=0;i<n;i++)
         scanf("%s%d%d",p[i].pid,&p[i].at,&p[i].bt);
 
-    for(int i=0;i<n-1;i++)
-        for(int j=0;j<n-i-1;j++)
-            if(p[j].at > p[j+1].at ||
-              (p[j].at==p[j+1].at &&
-               strcmp(p[j].pid,p[j+1].pid)>0)){
+    // SORT ONLY BY ARRIVAL TIME (stable)
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++){
+            if(p[j].at > p[j+1].at){
                 Process t=p[j];
                 p[j]=p[j+1];
                 p[j+1]=t;
             }
+        }
+    }
 
     int time=0;
     float total_wt=0,total_tat=0;
