@@ -1,49 +1,48 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct {
+typedef struct{
     char pid[10];
-    int at;
-    int bt;
-    int wt;
-    int tat;
+    int at, bt, wt, tat;
 } Process;
 
-int main() {
-
+int main(){
     int n;
     scanf("%d",&n);
 
     Process p[n];
 
     for(int i=0;i<n;i++)
-        scanf("%s %d %d",p[i].pid,&p[i].at,&p[i].bt);
+        scanf("%s%d%d",p[i].pid,&p[i].at,&p[i].bt);
 
-    for(int i=0;i<n-1;i++){
-        for(int j=0;j<n-i-1;j++){
-            if(p[j].at > p[j+1].at){
-                Process temp=p[j];
-                p[j]=p[j+1];
-                p[j+1]=temp;
+    // Sort by arrival time, then process ID if arrival time is equal
+    for(int i=0;i<n-1;i++)
+        for(int j=0;j<n-i-1;j++)
+            if(p[j].at > p[j+1].at || 
+                (p[j].at == p[j+1].at && strcmp(p[j].pid, p[j+1].pid) > 0)){
+                Process t = p[j];
+                p[j] = p[j+1];
+                p[j+1] = t;
             }
-        }
+
+    int time=0;
+    float aw=0,at=0;
+
+    for(int i=0;i<n;i++){
+        if(time<p[i].at)
+            time=p[i].at;
+
+        p[i].wt=time-p[i].at;
+        p[i].tat=p[i].wt+p[i].bt;
+
+        time+=p[i].bt;
+
+        aw+=p[i].wt;
+        at+=p[i].tat;
     }
 
-    float total_wt = 0, total_tat = 0;
-    int current_time = 0;
-
-    for(int i=0; i<n; i++){
-        if(current_time < p[i].at)
-            current_time = p[i].at;
-        p[i].wt = current_time - p[i].at;
-        p[i].tat = p[i].wt + p[i].bt;
-        current_time += p[i].bt;
-        total_wt += p[i].wt;
-        total_tat += p[i].tat;
-    }
-
-    float avg_wt = total_wt/n;
-    float avg_tat = total_tat/n;
+    aw/=n;
+    at/=n;
 
     printf("Waiting Time:\n");
     for(int i=0;i<n;i++)
@@ -53,8 +52,8 @@ int main() {
     for(int i=0;i<n;i++)
         printf("%s %d\n",p[i].pid,p[i].tat);
 
-    printf("Average Waiting Time: %.2f\n",avg_wt);
-    printf("Average Turnaround Time: %.2f",avg_tat);
+    printf("Average Waiting Time: %.2f\n",aw);
+    printf("Average Turnaround Time: %.2f",at);
 
     return 0;
 }
