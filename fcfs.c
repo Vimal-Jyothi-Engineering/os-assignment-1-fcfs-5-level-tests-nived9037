@@ -16,7 +16,7 @@ int main(){
     for(int i=0;i<n;i++)
         scanf("%s%d%d",p[i].pid,&p[i].at,&p[i].bt);
 
-    // sort by arrival time, then PID
+    // sort by arrival time, then by PID
     for(int i=0;i<n-1;i++)
         for(int j=0;j<n-i-1;j++)
             if(p[j].at > p[j+1].at ||
@@ -27,7 +27,7 @@ int main(){
                 p[j+1]=t;
             }
 
-    float aw=0,at=0;
+    float aw=0, at=0;
 
     p[0].wt=0;
     p[0].tat=p[0].bt;
